@@ -20,7 +20,51 @@ class _ShowDoctorState extends State<ShowDoctor> {
     futureDoctor = fetchDoctor();
   }
 
+// -----------------------------------------------
 
+  Future<http.Response> createAlbum(Doctor doc) {
+    return http.post(
+      Uri.parse('http://localhost:8000/api/doctors'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'name': doc.name,
+        'specialization': doc.specialization,
+        'experience': doc.experience,
+        'designation': doc.designation,
+        'gender': doc.gender,
+      }),
+    );
+  }
+
+  Future<http.Response> updateAlbum(Doctor doc) {
+    int id = doc.id;
+    return http.put(
+      Uri.parse('http://localhost:8000/api/doctors/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'name': doc.name,
+        'specialization': doc.specialization,
+        'experience': doc.experience,
+        'designation': doc.designation,
+        'gender': doc.gender,
+      }),
+    );
+  }
+
+  Future<http.Response> deleteAlbum(int id) async {
+    final http.Response response = await http.delete(
+      Uri.parse('http://localhost:8000/api/doctors/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+
+    // ----------------------------------------------
 
   Future<Doctor> fetchDoctor() async {
     final response = await http
